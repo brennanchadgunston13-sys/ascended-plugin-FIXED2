@@ -1,0 +1,10 @@
+name: KingsCrown
+version: '3.1'
+main: org.thepanther1.kingscrown.KingsCrown
+api-version: '26.2'
+author: ThePanther1
+commands:
+  getcrown:
+    description: Gives the legendary King's Crown (takes it from everyone else).
+    usage: /getcrown [player]
+    permission: kingscrown.admin
