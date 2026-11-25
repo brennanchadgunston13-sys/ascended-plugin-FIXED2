@@ -1,0 +1,40 @@
+name: Build KingsCrown Plugin
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Place files in Maven structure if at root
+        run: |
+          if [ -f "KingsCrown.java" ]; then
+            mkdir -p src/main/java/org/thepanther1/kingscrown
+            mv KingsCrown.java src/main/java/org/thepanther1/kingscrown/KingsCrown.java
+          fi
+          if [ -f "plugin.yml" ]; then
+            mkdir -p src/main/resources
+            mv plugin.yml src/main/resources/plugin.yml
+          fi
+
+      - name: Build with Maven
+        run: mvn -B clean package
+
+      - name: Upload compiled JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: KingsCrown-plugin
+          path: target/*.jar
